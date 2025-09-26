@@ -17,7 +17,7 @@ const Cart = () => {
     const fetchImagesAndUpdateCart = async () => {
       console.log("Cart", cart);
       try {
-        const response = await axios.get(`https://e-kirana-shop.onrender.com/api/product`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/product`);
         const backendProductIds = response.data.map((product) => product.id);
 
         const updatedCartItems = cart.filter((item) => backendProductIds.includes(item.id));
@@ -221,3 +221,4 @@ const Cart = () => {
 };
 
 export default Cart;
+
