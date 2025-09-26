@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import Logo from "./navigation/Logo";
 import Categories from "./navigation/Categories";
 import SearchBar from "./navigation/SearchBar";
-import CartButton from "./navigation/CartButton";
+import CartButton from "./navigation/CartButton"; // ✅ import
 import Profile from "./navigation/Profile";
+import AddProduct from "../pages/AddProduct";
+import AddPro from "./navigation/AddPro";
 
 const Navbar = ({ onSelectCategory }) => {
   const getInitialTheme = () => localStorage.getItem("theme") || "light-theme";
   const [theme, setTheme] = useState(getInitialTheme());
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark-theme" ? "light-theme" : "dark-theme";
@@ -21,46 +22,44 @@ const Navbar = ({ onSelectCategory }) => {
     document.body.className = theme;
   }, [theme]);
 
-  const categories = ["Laptop", "Headphone", "Mobile", "Electronics", "Toys", "Fashion"];
+  const categories = [
+    "Laptop",
+    "Headphone",
+    "Mobile",
+    "Electronics",
+    "Toys",
+    "Fashion",
+  ];
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
-      <nav className="container mx-auto flex items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <Logo />
+    <header>
+      <nav className="navbar navbar-expand-lg fixed-top  bg-white shadow-lg z-50 max-h-60 overflow-y-auto">
+        <div className="container-fluid  h-20 ">
+          <Logo />
 
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden p-2 text-gray-700"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? "✖" : "☰"}
-        </button>
+          <div
+            className="flex justify-between pl-2 navbar-collapse"
+            id="navbarSupportedContent"
+          >
+            <div className="navbar-nav max-w-full flex items-center">
+              <Categories
+                categories={categories}
+                onSelectCategory={onSelectCategory}
+              />
+              <SearchBar />
+            </div>
+            
+            {/* <div><AddPro/></div> */}
 
-        {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-6">
-          <Categories categories={categories} onSelectCategory={onSelectCategory} />
-          <SearchBar />
-        </div>
+            <div className="d-flex align-items-center gap-3">
+              {/* ✅ Replaced cart div with CartButton */}
+              <CartButton />
 
-        {/* Right side buttons */}
-        <div className="hidden lg:flex items-center gap-4">
-          <CartButton />
-          <Profile />
-        </div>
-      </nav>
-
-      {/* Mobile Dropdown Menu */}
-      {menuOpen && (
-        <div className="lg:hidden flex flex-col gap-4 px-4 pb-4 bg-white shadow-md">
-          <Categories categories={categories} onSelectCategory={onSelectCategory} />
-          <SearchBar />
-          <div className="flex items-center gap-4">
-            <CartButton />
-            <Profile />
+             <Profile/>
+            </div>
           </div>
         </div>
-      )}
+      </nav>
     </header>
   );
 };
