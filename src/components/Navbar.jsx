@@ -49,7 +49,7 @@ const Navbar = ({ onSelectCategory }) => {
               <SearchBar />
             </div>
             
-            {/* <div><AddPro/></div> */}
+             <div><AddPro/></div> 
 
             <div className="d-flex align-items-center gap-3">
               {/* ✅ Replaced cart div with CartButton */}
@@ -65,3 +65,4 @@ const Navbar = ({ onSelectCategory }) => {
 };
 
 export default Navbar;
+
