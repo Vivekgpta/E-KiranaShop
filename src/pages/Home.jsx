@@ -1,11 +1,11 @@
-import  { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AppContext from "../Context/Context";
-import unplugged from "../assets/unplugged.png"
+import unplugged from "../assets/unplugged.png";
 import Banner from "../components/home/Banner";
 
-const Home = ({selectedCategory}) => {
+const Home = ({ selectedCategory }) => {
   const { data, isError, addToCart, refreshData } = useContext(AppContext);
   const [products, setProducts] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -24,7 +24,7 @@ const Home = ({selectedCategory}) => {
           data.map(async (product) => {
             try {
               const response = await axios.get(
-                (`${import.meta.env.VITE_API_URL}/product/${product.id}/image`),
+                `${import.meta.env.VITE_API_URL}/product/${product.id}/image`,
                 { responseType: "blob" }
               );
               const imageUrl = URL.createObjectURL(response.data);
@@ -52,117 +52,73 @@ const Home = ({selectedCategory}) => {
 
   if (isError) {
     return (
-      <h2 className="text-center" style={{ padding: "18rem" }}>
-      <img src={unplugged} alt="Error" style={{ width: '100px', height: '100px' }}/>
-      </h2>
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <img
+          src={unplugged}
+          alt="Error"
+          className="w-24 h-24 object-contain"
+        />
+      </div>
     );
   }
+
   return (
-    <>
-        
-      <div
-        className="grid bg-amber-300"
-        style={{
-          marginTop: "64px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "20px",
-          padding: "20px",
-        }}
-      >
-
-
+    <div className="mt-20 px-4 md:px-8 lg:px-12">
+      {/* Responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.length === 0 ? (
-          <h2
-            className="text-center"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            No Products Available
-          </h2>
+          <div className="col-span-full flex justify-center items-center h-40">
+            <h2 className="text-lg font-semibold text-gray-600">
+              No Products Available
+            </h2>
+          </div>
         ) : (
           filteredProducts.map((product) => {
             const { id, brand, name, price, productAvailable, imageUrl } =
               product;
-            const cardStyle = {
-              width: "18rem",
-              height: "12rem",
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 2px 3px",
-              backgroundColor: productAvailable ? "#fff" : "#ccc",
-            };
             return (
               <div
-                className="card mb-3"
-                style={{
-                  width: "250px",
-                  height: "360px",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                  borderRadius: "10px",
-                  overflow: "hidden", 
-                  backgroundColor: productAvailable ? "#fff" : "#ccc",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent:'flex-start',
-                  alignItems:'stretch'
-                }}
                 key={id}
+                className={`rounded-xl shadow-md flex flex-col justify-between transition hover:shadow-lg ${
+                  productAvailable ? "bg-white" : "bg-gray-200"
+                }`}
               >
                 <Link
                   to={`/components/Product/${id}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  className="flex flex-col h-full"
                 >
+                  {/* Product Image */}
                   <img
                     src={imageUrl}
                     alt={name}
-                    style={{
-                      width: "100%",
-                      height: "150px", 
-                      objectFit: "cover",  
-                      padding: "5px",
-                      margin: "0",
-                      borderRadius: "10px 10px 10px 10px", 
-                    }}
+                    className="w-full h-40 object-cover rounded-t-xl"
                   />
-                  <div
-                    className="card-body"
-                    style={{
-                      flexGrow: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      padding: "10px",
-                    }}
-                  >
+
+                  {/* Product Info */}
+                  <div className="flex flex-col flex-grow px-4 py-3">
                     <div>
-                      <h5
-                        className="card-title"
-                        style={{ margin: "0 0 10px 0", fontSize: "1.2rem" }}
-                      >
+                      <h5 className="font-semibold text-lg truncate">
                         {name.toUpperCase()}
                       </h5>
-                      <i
-                        className="card-brand"
-                        style={{ fontStyle: "italic", fontSize: "0.8rem" }}
-                      >
-                        {"~ " + brand}
-                      </i>
+                      <p className="italic text-sm text-gray-600">
+                        ~ {brand}
+                      </p>
                     </div>
-                    <hr className="hr-line" style={{ margin: "10px 0" }} />
-                    <div className="home-cart-price">
-                      <h5
-                        className="card-text"
-                        style={{ fontWeight: "600", fontSize: "1.1rem",marginBottom:'5px' }}
-                      >
-                        <i ></i>
-                        {price}
+
+                    <hr className="my-3" />
+
+                    <div>
+                      <h5 className="font-bold text-gray-800 mb-2">
+                        ₹ {price}
                       </h5>
                     </div>
+
                     <button
-                      className="btn-hover color-9"
-                      style={{margin:'10px 25px 0px '  }}
+                      className={`mt-auto w-full rounded-lg py-2 text-white font-medium transition ${
+                        productAvailable
+                          ? "bg-amber-500 hover:bg-amber-600"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
                       onClick={(e) => {
                         e.preventDefault();
                         addToCart(product);
@@ -170,7 +126,7 @@ const Home = ({selectedCategory}) => {
                       disabled={!productAvailable}
                     >
                       {productAvailable ? "Add to Cart" : "Out of Stock"}
-                    </button> 
+                    </button>
                   </div>
                 </Link>
               </div>
@@ -178,7 +134,7 @@ const Home = ({selectedCategory}) => {
           })
         )}
       </div>
-    </>
+    </div>
   );
 };
 
