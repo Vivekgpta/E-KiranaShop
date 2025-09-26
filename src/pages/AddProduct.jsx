@@ -35,7 +35,7 @@ const AddProduct = () => {
     );
 
     axios
-      .post(`https://e-kirana-shop.onrender.com/api/product`, formData, {
+      .post(`${import.meta.env.VITE_API_URL}/product`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -206,3 +206,4 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
