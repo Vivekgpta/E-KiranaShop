@@ -14,7 +14,6 @@ const AddProduct = () => {
     productAvailable: false,
   });
   const [image, setImage] = useState(null);
-  const [open, setOpen] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +35,7 @@ const AddProduct = () => {
     );
 
     axios
-      .post(`${import.meta.env.VITE_API_URL}/product`, formData, {
+      .post(`https://e-kirana-shop.onrender.com/api/product`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -207,5 +206,3 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-
-

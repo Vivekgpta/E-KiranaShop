@@ -16,7 +16,7 @@ const AddPro = () => {
           }}
         ></i>
       </Link>
-      AddProd
+      Product
     </div>
   );
 };
