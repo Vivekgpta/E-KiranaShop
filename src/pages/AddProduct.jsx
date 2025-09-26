@@ -14,6 +14,7 @@ const AddProduct = () => {
     productAvailable: false,
   });
   const [image, setImage] = useState(null);
+  const [open, setOpen] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -206,4 +207,5 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
 
